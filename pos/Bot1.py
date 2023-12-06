@@ -1,19 +1,10 @@
-import asyncio
 import logging
 from django.contrib.auth.models import User
-from .models import Chel
+from pos.models import Chel
 from aiogram.client import bot
 from aiogram import Dispatcher
 from aiogram import types
-from aiogram.types import InlineKeyboardMarkup
-from aiogram.types import InlineKeyboardButton
-from aiogram.types import ReplyKeyboardRemove
-from aiogram.types import ReplyKeyboardMarkup
-from aiogram.types import KeyboardButton
-from aiogram import F
-from aiogram import Router
 from aiogram.types import Message
-from aiogram.filters import Filter
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
@@ -104,24 +95,25 @@ async def bPa(mes: Message, state: FSMContext) -> None:
 
             ch = Chel(tgid=mes.from_user.id, tgna=mes.from_user.last_name, tgni=mes.from_user.username,id_id=user.id)
             ch.save()
-        except:
-            await mes.answer('ошибка')
-        finally:
+        except Exception as err:
+            await mes.answer(f'ошибка: {err}')
+        else:
             await  mes.answer('Ваши данные сохранены')
     else:
         await mes.answer('Повторение не совподает.')
 
 
-async def main():
+async def main_bot():
     try:
 
         await dp.start_polling(bot1)
 
     finally:
-        bot1.session.close() # эта штука позволяет читать пропущенные.
+        bot1.session.close()
+        # эта штука позволяет читать пропущенные.
         #Т.е. если сессию не закрывать, то при повторном запуске ты не получишь пропущенные.
         #Сервер телеграма, будет считать что бот все прочетал. Так устроен аиограм, наверно.
         #зависит от того каким из двух способов аиограм(незнаю) работает с сервером телеграмма.
 
 #if __name__ == "__main__":
-#    asyncio.run(main(),start())
+#    asyncio.run(main())

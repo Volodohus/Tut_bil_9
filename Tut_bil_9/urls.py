@@ -16,10 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from pos.Bot1 import main,start
 import asyncio
-asyncio.run(main())
+from threading import Thread
+from pos.Bot1 import main_bot
 
+def bot_thread():
+   asyncio.run(main_bot())
+t = Thread(target=bot_thread)
+t.setDaemon(True)
+t.start()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
