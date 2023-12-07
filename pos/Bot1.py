@@ -9,6 +9,7 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 from .tokid import toki,idVo
+from asgiref.sync import sync_to_async
 # ДЗ: сделать бота, который будет запрашивать данные пользователя и сохранять их в стейт.
 # Со звездочкой: так же сохранять и в базу данных.
 
@@ -88,13 +89,18 @@ async def bPa(mes: Message, state: FSMContext) -> None:
 async def bPa(mes: Message, state: FSMContext) -> None:
     dat = await state.get_data()
     if mes.text == dat['pa']:
-        try:
-            user = User.objects.create_user(dat['nik'],dat['em'],dat['pa'])
-            user.last_name = dat['name']
-            user.save()
 
-            ch = Chel(tgid=mes.from_user.id, tgna=mes.from_user.last_name, tgni=mes.from_user.username,id_id=user.id)
-            ch.save()
+        try:
+            @sync_to_async()
+            def buza(dat, mes):
+                user = User.objects.create_user(dat['nik'],dat['em'],dat['pa'])
+                user.last_name = dat['name']
+                user.save()
+
+                ch = Chel(tgid=mes.from_user.id, tgna=mes.from_user.last_name, tgni=mes.from_user.username,id_id=user.id)
+                ch.save()
+            await buza(dat,mes)
+
         except Exception as err:
             await mes.answer(f'ошибка: {err}')
         else:
