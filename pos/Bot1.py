@@ -19,9 +19,9 @@ logging.basicConfig(level=logging.INFO)
 bot1 = bot.Bot(token= toki)
 dp = Dispatcher()
 
-@dp.startup()
-async def start():
-    await bot1.send_message(idVo,'Поехали!')
+# @dp.startup()
+# async def start():
+#     await bot1.send_message(idVo,'Поехали!')
 
 
 
@@ -42,6 +42,7 @@ class Sb(StatesGroup):
     name    = State()
     em      = State()
     pa      = State()
+    po      = State()
     dapa    = State()
 
 @dp.message(Command('ab'))
@@ -74,14 +75,19 @@ async  def bEm(mes: Message, state: FSMContext) -> None:
     dat = await state.get_data()
     us = mes.from_user
     logging.info("KUKU", [dat,us])
-    await mes.answer(text =f'ВЫ {dat["name"]} {dat["nik"]} почта:{dat["em"]}.\nТеперь нужно ввести пароль.')
+    await mes.answer(text =f'ВЫ {dat["name"]} {dat["nik"]} почта:{dat["em"]}.\n Введите ваше послание')
+    await state.set_state(Sb.po)
+
+@dp.message(Sb.po)
+async def bPo(mes: Message, state: FSMContext) -> None:
+    await state.update_data(po=mes.text)
+    await mes.answer(text='Осталось ввести пароль.')
     await state.set_state(Sb.pa)
 
 @dp.message(Sb.pa)
 async def bPa(mes: Message, state: FSMContext) -> None:
     await  state.update_data(pa=mes.text)
     dat = await state.get_data()
-    logging.info("KUKU", [dat,])
     await state.set_state(Sb.dapa)
     await mes.answer('Подтвердите пароль.')
 
@@ -97,7 +103,14 @@ async def bPa(mes: Message, state: FSMContext) -> None:
                 user.last_name = dat['name']
                 user.save()
 
-                ch = Chel(tgid=mes.from_user.id, tgna=mes.from_user.last_name, tgni=mes.from_user.username,id_id=user.id)
+                ch = Chel(
+                    tgid=mes.from_user.id,
+                    tgna=mes.from_user.last_name,
+                    tgni=mes.from_user.username,
+                    id_id=user.id,
+                    na=dat['nik'],
+                    po=dat['po'],
+                )
                 ch.save()
             await buza(dat,mes)
 

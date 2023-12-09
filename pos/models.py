@@ -16,4 +16,4 @@ class Chel(models.Model):
     po   = models.CharField(max_length=1000, help_text = 'Твоё посланице. 1000 символов.',null=True,blank=True)
 
     def __str__(self):
-        return self.na + ''' сказал(а) ''' + self.po
+        return str(self.id_id)

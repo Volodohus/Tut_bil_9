@@ -19,6 +19,7 @@ from django.urls import path, include
 import asyncio
 from threading import Thread
 from pos.Bot1 import main_bot
+from pos import views
 
 def bot_thread():
    asyncio.run(main_bot())
@@ -29,4 +30,5 @@ t.start()
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
+    path('', views.index, name='index')
 ]
