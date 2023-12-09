@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Tut byl ya</title>
+</head>
+<body>
+
+<form method="post">
+    {% for i in post %}
+    <h1>{{i.na}} сказал {{ i.po }}</h1>
+    {% endfor %}
+</form>
+
+</body>
+</html>
