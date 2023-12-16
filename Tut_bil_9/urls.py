@@ -21,14 +21,13 @@ from threading import Thread
 from pos.Bot1 import main_bot
 from pos import views
 
-def bot_thread():
-   asyncio.run(main_bot())
-t = Thread(target=bot_thread)
+t = Thread(target=lambda : asyncio.run(main_bot()))
 t.setDaemon(True)
 t.start()
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', views.index, name='index')
+    path('', views.index, name='Index'),
+    path("<int:Chel_id>/", views.prof, name = 'Prof'),
 ]

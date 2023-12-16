@@ -4,7 +4,7 @@ from .models import Chel
 
 # Create your views here.
 def index(request):
-    data=[]
-    for i in Chel.objects.all():
-        data.append((i.na,i.po))
     return render(request, 'Glav.html',{'post':Chel.objects.values()})
+
+def prof(request, Chel_id):
+    return render(request,'Prof.html',{'Chel_id': Chel.objects.get(id_id=Chel_id)})

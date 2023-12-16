@@ -6,11 +6,20 @@
 </head>
 <body>
 
-<form method="post">
+<div>
+    <ul>
     {% for i in post %}
-    <h1>{{i.na}} сказал {{ i.po }}</h1>
+        <li>
+
+
+           <h1>{{i.na}} сказал(а): {{ i.po }}</h1>
+           <a href="{% url 'Prof' i.id_id %}">Профиль</a>
+
+
+        </li>
     {% endfor %}
-</form>
+    </ul>
+</div>
 
 </body>
 </html>
