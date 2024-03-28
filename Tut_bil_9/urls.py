@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 import asyncio
-from threading import Thread
+
 from pos.Bot1 import main_bot
 from pos import views
+from threading import Thread
 
 t = Thread(target=lambda : asyncio.run(main_bot()))
 t.setDaemon(True)

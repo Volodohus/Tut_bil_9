@@ -1,0 +1,18 @@
+{% extends  %}
+{% block body %}
+
+    <ul>
+        {% for i in chel %}
+            <li>
+            <form method="post">
+                <table>
+                <tb><h1> {{ i.na }}</h1></tb>
+                <tb><input type="text" name="tex"></tb>
+                <tb><input type="submit" value="отправить"> </tb>
+                </table>
+            </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock %}
